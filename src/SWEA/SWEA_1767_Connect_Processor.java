@@ -28,7 +28,7 @@ import java.util.StringTokenizer;
  *
  */
 public class SWEA_1767_Connect_Processor {
-	static class Core {
+	static class Core { // 코어 위치 정보 저장
 		int y, x;
 
 		public Core(int y, int x) {
@@ -36,11 +36,11 @@ public class SWEA_1767_Connect_Processor {
 			this.x = x;
 		}
 	}
-
+	// N : 셀크기, cell : 코어와 전선을 담을 맵, minWireCnt : 전선 최소값, maxCore : 코어 최대값
 	private static int N, cell[][], minWireCnt, maxCore;
-	private static int dx[] = {0, 0, -1, 1};
+	private static int dx[] = {0, 0, -1, 1}; // 상 하 좌 우 델타
 	private static int dy[] = {-1, 1, 0, 0};
-	private static List<Core> clist;
+	private static List<Core> clist; // 코어 위치를 담을 리스트
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -50,7 +50,7 @@ public class SWEA_1767_Connect_Processor {
 			N = Integer.parseInt(br.readLine());
 
 			cell = new int[N][N];
-			clist =new ArrayList<>();
+			clist = new ArrayList<>();
 			
 			StringTokenizer stt;
 			for( int i = 0; i < N; i++) {
@@ -79,10 +79,18 @@ public class SWEA_1767_Connect_Processor {
 
 	}
 
-	/** */
+	/** 
+	 * 전선 연결 DFS 
+	 * 해당 코어 위치에서 사방 탐색을 한다.
+	 * 한 방향으로 계속해서 나아갔을 때, 범위를 벗어나면
+	 * 방해물이 없는 것으로 판단. 전선을 설치한다.
+	 * 가는 도중에 코어나 전선을 만난다면 방향을 바꿔서 다시 카운팅한다.
+	 * 카운팅이 되었다면 해당 정보를 누적해서 다음 DFS
+	 * 카운팅이 없다면 인덱스만 늘려서 DFS
+	 * */
 	private static void startConnect(int idx, int corecnt, int wirecnt) {
 		if(idx == clist.size()) {
-			if(maxCore < corecnt) {
+			if(maxCore < corecnt) { 
 				maxCore = corecnt;
 				minWireCnt = wirecnt;
 			} else if( maxCore == corecnt) {
@@ -128,6 +136,7 @@ public class SWEA_1767_Connect_Processor {
 			}
 
 			// 카운트가 0이라는 소리는 어떤 경우에도 전선을 설치 할 수 없다는 뜻.
+			// 연결을 다 해도 연결이 안되는 코어가 존재 할 수도 있다는 것.
 			// 인덱스만 하나 늘리고 코어와 전선의 수는 그대로 다음 탐색
 			if(count == 0) startConnect(idx+1, corecnt, wirecnt);
 			else {
