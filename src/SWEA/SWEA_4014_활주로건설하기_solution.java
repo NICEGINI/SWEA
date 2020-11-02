@@ -13,7 +13,6 @@ import java.util.StringTokenizer;
  */
 public class SWEA_4014_활주로건설하기_solution {
 	private static int N, X, map[][], totalCnt;
-	private static boolean row[][], col[][];
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		
@@ -26,9 +25,6 @@ public class SWEA_4014_활주로건설하기_solution {
 			X = Integer.parseInt(stt.nextToken());
 			
 			map = new int[N][N];
-			row = new boolean[N][N];
-			col = new boolean[N][N];
-			
 			totalCnt = 0;
 			
 			for(int i = 0; i < N; i++) {
