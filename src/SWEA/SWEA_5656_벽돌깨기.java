@@ -46,20 +46,20 @@ public class SWEA_5656_벽돌깨기 {
 	
 	/** dfs로 해야할 것 같아. */
 	private static void start(int idx, int[][] map) {
-		if(idx == N) {
+		if(idx == N) { // 모두 이동
 			int sum = 0;
 			for(int i = H-1; i >= 0; i--) {
-				int cnt = 0;
+				int cnt = 0; // 더 셀 필요가 있는지 확인
 				for(int j = 0; j < W; j++) {
-					if(map[i][j] != 0 ) {
+					if(map[i][j] != 0 ) { // 남은 블럭만 센다
 						sum++;
 						continue;
 					}
-					cnt++;
+					cnt++; // 여기로 왔다는 소리는 0이라는 소리
 				}
-				if(cnt == W) break;
+				if(cnt == W) break; // 가로 한 줄이 전부 0이면 위는 볼 필요 없음
 			}
-			if(resMin > sum) {
+			if(resMin > sum) { // 최소값 갱신
 				resMin = sum;
 			}
 			return ;
@@ -75,7 +75,7 @@ public class SWEA_5656_벽돌깨기 {
 		for(int j = 0; j < W; j++) {
 			for(int i = 0; i < H; i++) {
 				if(tmpmap[i][j] != 0) {
-					idxY = i;
+					idxY = i; // 가장 위의 블럭을 선택
 					break;
 				}
 			}
@@ -99,7 +99,7 @@ public class SWEA_5656_벽돌깨기 {
 				if(map[i][j] != 0) { // 현재 위치가 0이 아닌 상황에서
 					int idx = 1;
 					while(true) { // 가장 아래로 닿을 때까지
-						if(i+idx >= H) break;
+						if(i+idx >= H) break; // 범위 벗어나면 멈춤
 						if(map[i+idx][j] == 0) { // 아래가 빈칸이면
 							map[i+idx][j] = map[i+idx-1][j]; // 값 체인지
 							map[i+idx-1][j] = 0;
@@ -114,25 +114,22 @@ public class SWEA_5656_벽돌깨기 {
 	}
 
 	/** BFS를 해야할 것 같은데..*/
-	private static int breakwall(int y, int x, int[][] map) {
+	private static void breakwall(int y, int x, int[][] map) {
 		boolean visited[][] = new boolean[H][W];
 		Queue<int[]> queue = new LinkedList<>();
-		queue.offer(new int[] {y, x});
+		queue.offer(new int[] {y, x}); // 현재 블럭 위치가 기준
 		visited[y][x] = true;
 		
-		int bCnt = 0;
 		while(!queue.isEmpty()) {
 			int[] pos = queue.poll();
 			
 			if(map[pos[0]][pos[1]] == 1) { // 해당 위치 값이 1이면 다음으로
 				map[pos[0]][pos[1]] = 0;
-				bCnt++;
 				continue;
 			}
 			// 1이상이면
 			// 현재 부서진 벽돌의 값
 			int val = map[pos[0]][pos[1]];
-			int idx = 0;
 			for(int d = 0; d < 4; d++) {
 				int next_y = pos[0];
 				int next_x = pos[1];
@@ -148,10 +145,7 @@ public class SWEA_5656_벽돌깨기 {
 			}
 			// 현재 위치 벽돌 파괴
 			map[pos[0]][pos[1]] = 0;
-			bCnt++;
 		}
-		
-		return bCnt;
 	}
 	
 	// 범위 체크
